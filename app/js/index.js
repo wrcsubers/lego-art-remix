@@ -158,16 +158,12 @@ const INCHES_IN_CM = 0.393701;
 const SCALING_FACTOR = 40;
 const PLATE_WIDTH = 16;
 
-document.getElementById("width-text").title = `${(targetResolution[0] * PIXEL_WIDTH_CM).toFixed(1)} cm, ${(
-    targetResolution[0] *
-    PIXEL_WIDTH_CM *
-    INCHES_IN_CM
-).toFixed(1)}″`;
-document.getElementById("height-text").title = `${(targetResolution[1] * PIXEL_WIDTH_CM).toFixed(1)} cm, ${(
-    targetResolution[1] *
-    PIXEL_WIDTH_CM *
-    INCHES_IN_CM
-).toFixed(1)}″`;
+let targetRes0 = document.getElementById("width-slider").value;
+let targetRes1 = document.getElementById("height-slider").value;
+let totalStuds = targetRes0 * targetRes1
+document.getElementById("width-text").innerHTML = `${targetRes0} studs, ${(targetRes0 * PIXEL_WIDTH_CM).toFixed(1)} cm, ${(targetRes0 * PIXEL_WIDTH_CM * INCHES_IN_CM).toFixed(1)}″`;
+document.getElementById("height-text").innerHTML = `${targetRes1} studs, ${(targetRes1 * PIXEL_WIDTH_CM).toFixed(1)} cm, ${(targetRes1 * PIXEL_WIDTH_CM * INCHES_IN_CM).toFixed(1)}″`;
+document.getElementById("total-studs-text").innerHTML = totalStuds.toLocaleString();
 
 let inputImageCropper;
 
@@ -324,28 +320,34 @@ let overrideDepthPixelArray = new Array(targetResolution[0] * targetResolution[1
 function handleResolutionChange() {
     overridePixelArray = new Array(targetResolution[0] * targetResolution[1] * 4).fill(null);
     overrideDepthPixelArray = new Array(targetResolution[0] * targetResolution[1] * 4).fill(null);
-    document.getElementById("width-text").title = `${(targetResolution[0] * PIXEL_WIDTH_CM).toFixed(1)} cm, ${(
-        targetResolution[0] *
-        PIXEL_WIDTH_CM *
-        INCHES_IN_CM
-    ).toFixed(1)}″`;
-    document.getElementById("height-text").title = `${(targetResolution[1] * PIXEL_WIDTH_CM).toFixed(1)} cm, ${(
-        targetResolution[1] *
-        PIXEL_WIDTH_CM *
-        INCHES_IN_CM
-    ).toFixed(1)}″`;
-    $('[data-toggle="tooltip"]').tooltip("dispose");
-    $('[data-toggle="tooltip"]').tooltip();
+
     initializeCropper();
     runStep1();
+}
+
+function updateResolutionText (){
+	let targetRes0 = document.getElementById("width-slider").value;
+	let targetRes1 = document.getElementById("height-slider").value;
+	let totalStuds = targetRes0 * targetRes1
+	document.getElementById("width-text").innerHTML = `${targetRes0} studs, ${(targetRes0 * PIXEL_WIDTH_CM).toFixed(1)} cm, ${(targetRes0 * PIXEL_WIDTH_CM * INCHES_IN_CM).toFixed(1)}″`;
+	document.getElementById("height-text").innerHTML = `${targetRes1} studs, ${(targetRes1 * PIXEL_WIDTH_CM).toFixed(1)} cm, ${(targetRes1 * PIXEL_WIDTH_CM * INCHES_IN_CM).toFixed(1)}″`;
+	document.getElementById("total-studs-text").innerHTML = totalStuds.toLocaleString();
 }
 
 document.getElementById("width-slider").addEventListener(
     "change",
     () => {
-        document.getElementById("width-text").innerHTML = document.getElementById("width-slider").value;
+        updateResolutionText();
         targetResolution[0] = document.getElementById("width-slider").value;
         handleResolutionChange();
+    },
+    false
+);
+
+document.getElementById("width-slider").addEventListener(
+    "input",
+    () => {
+        updateResolutionText();
     },
     false
 );
@@ -353,12 +355,21 @@ document.getElementById("width-slider").addEventListener(
 document.getElementById("height-slider").addEventListener(
     "change",
     () => {
-        document.getElementById("height-text").innerHTML = document.getElementById("height-slider").value;
+        updateResolutionText();
         targetResolution[1] = document.getElementById("height-slider").value;
         handleResolutionChange();
     },
     false
 );
+
+document.getElementById("height-slider").addEventListener(
+    "input",
+    () => {
+	    updateResolutionText();
+    },
+    false
+);
+
 document.getElementById("clear-overrides-button").addEventListener("click", () => {
     overridePixelArray = new Array(targetResolution[0] * targetResolution[1] * 4).fill(null);
     runStep2();
