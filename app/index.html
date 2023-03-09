@@ -316,6 +316,10 @@
                     <div class="card-body accordion-card-body">
                       <b>Target Resolution:</b>
                       <div style="width: 100%">
+						<input type="checkbox" id="matchAspectRatio" name="matchAspectRatioCheckbox" checked>
+						<label for="matchAspectRatioCheckbox">Match Aspect Ratio of Image</label>
+					  </div>
+					  <div style="width: 100%">
                         <div>
                           Width:
                           <span id="width-text" data-toggle="tooltip" title="" data-placement="top">48</span>
@@ -324,9 +328,9 @@
                           type="range"
                           id="width-slider"
                           name="points"
-                          min="16"
-                          max="128"
-                          step="16"
+                          min="32"
+                          max="256"
+                          step="2"
                           value="48"
                           style="width: 100%"
                         />
@@ -340,12 +344,18 @@
                           type="range"
                           id="height-slider"
                           name="points"
-                          min="16"
-                          max="128"
-                          step="16"
+                          min="32"
+                          max="256"
+                          step="2"
                           value="48"
                           style="width: 100%"
                         />
+                      </div>
+					  <div style="width: 100%">
+                        <div>
+                          Total Studs:
+                          <span id="total-studs-text"></span>
+                        </div>
                       </div>
                     </div>
                   </div>
